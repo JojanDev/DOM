@@ -1,5 +1,9 @@
 //Importaciones
 
+import { Esvalidar } from "./Modules/modules.js";
+
+
+
 //Variables
 const formulario = document.querySelector("form");
 const nombre = document.querySelector('[name = "nombre"]');
@@ -8,6 +12,9 @@ const telefono = document.querySelector('[name = "telefono"]');
 const documento = document.querySelector('[name = "documento"]');
 const usuario = document.querySelector('[name = "usuario"]');
 const contrasena = document.querySelector('[name = "contrasena"]');
+
+const politicas = document.querySelector('[name = "politicas"]');
+const boton = document.querySelector('#btn_validar')
 
 const campos = [nombre, apellido, telefono, documento, usuario, contrasena];
 
@@ -24,15 +31,16 @@ const teclasEspeciales = [
 
 const validarTexto = (event) => {
   const key = event.key;
-  const regex = /^[\D]*$/i;
-  if (!regex.test(key)) {
+  const regex = /\D/;
+  
+  if (!regex.test(key) || event.target.value.length >= 10) {
     event.preventDefault();
   }
 };
 
 const validarNumero = (event) => {
   const key = event.key;
-  const regex = /^[\d]*$/;
+  const regex = /\d/;
   if (!regex.test(key) && !teclasEspeciales.includes(key)) {
     event.preventDefault();
   }
@@ -46,7 +54,18 @@ const validarCampos = (event) => {
 
   campos.forEach((campo) => {
     if (campo.value.trim() == "") {
+      let campoRojo = document.querySelector(`[name = "${campo.name}"]`);
+      let siguienteElemento = campoRojo.nextElementSibling;
       camposVacios.push(campo.name);
+
+      if (!siguienteElemento.className === "span" || siguienteElemento.className == "") {
+        let span = document.createElement('span');
+        span.textContent = "¡¡¡Este campo es obligatorio!!!";
+        span.classList.add('span');
+        campoRojo.after(span);
+        campoRojo.classList.add('borde-rojo');
+      }
+
     }
   });
 
@@ -72,13 +91,42 @@ const validarCampos = (event) => {
   }
 };
 
+const limpiar = (e) => {
+  if (e.target.value !== "") {
+    e.target.classList.remove('borde-rojo');
+    if (e.target.nextElementSibling.className == "span") {
+      e.target.nextElementSibling.remove()
+    }
+  }
+}
+
 //Eventos
+
+addEventListener('DOMContentLoaded', (event) => {
+  if (!politicas.checked)
+    boton.setAttribute('disabled', '');
+})
+
+politicas.addEventListener('change', () => {
+  if (politicas.checked)
+    boton.removeAttribute('disabled');
+  else 
+    boton.setAttribute('disabled', '');
+})
+
 nombre.addEventListener("keydown", validarTexto);
 apellido.addEventListener("keydown", validarTexto);
 telefono.addEventListener("keydown", validarNumero);
 documento.addEventListener("keydown", validarNumero);
 
-formulario.addEventListener("submit", validarCampos);
+nombre.addEventListener('blur', limpiar);
+apellido.addEventListener('blur', limpiar);
+telefono.addEventListener('blur', limpiar);
+documento.addEventListener('blur', limpiar);
+usuario.addEventListener('blur', limpiar);
+contrasena.addEventListener('blur', limpiar);
+
+formulario.addEventListener("submit", Esvalidar);
 
 //------------------------------------------------------------------------
 

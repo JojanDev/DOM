@@ -19,20 +19,45 @@
       <div class="container">
         <div class="card">
           <h2 class="center">Ingrese su datos de usuario</h2>
-          <form>
-            <input type="text" name="nombre" placeholder="Nombre">
-            <input type="text" name="apellido" placeholder="Apellido">
-            <input type="tel" name="telefono" placeholder="Telefono">
-            <input type="number" name="documento" placeholder="Documento">
-            <input type="text" name="usuario" placeholder="Usuario">
-            <input type="password" name="contrasena" placeholder="Contraseña">
+          <form novalidate>
+            <div class="form__control">
+              <input type="text" name="nombre" placeholder="Nombre" required>
+            </div>
+            <div class="form__control">
+              <input type="text" name="apellido" placeholder="Apellido" required>
+            </div>
+            <div class="form__control">
+              <input type="tel" name="telefono" placeholder="Telefono" required>
+            </div>
+
+            <div class="form__control">
+              <select name="ciudades" id="ciudades" required>
+                <option>Seleccionar</option>
+                <option value="1">Bucaramanga</option>
+                <option value="2">Girón</option>
+              </select>
+            </div>
+
+            <div class="form__control">
+              <input type="number" name="documento" placeholder="Documento">
+            </div>
+            <div class="form__control">
+              <input type="text" name="usuario" placeholder="Usuario">
+            </div>
+            <div class="form__control">
+              <input type="password" name="contrasena" placeholder="Contraseña">
+            </div>
+            <div>
+              <input type="checkbox" name="politicas">
+              <label for="politicas">Terminos y condiciones</label>
+            </div>
             <button type="submit" id="btn_validar">Validar</button>
           </form>
         </div>
       </div>
     </section>
   </main>
-  <script src="app.js"></script>
+  <script src="app.js" type="module"></script>
 </body>
 
 </html>
