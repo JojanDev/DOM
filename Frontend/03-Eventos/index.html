@@ -30,9 +30,11 @@
               <input type="tel" name="telefono" placeholder="Telefono" required>
             </div>
 
+
+
             <div class="form__control">
               <select name="ciudades" id="ciudades" required>
-                <option>Seleccionar</option>
+                <option>Seleccionar ciudad</option>
                 <option value="1">Bucaramanga</option>
                 <option value="2">Girón</option>
               </select>
@@ -47,6 +49,52 @@
             <div class="form__control">
               <input type="password" name="contrasena" placeholder="Contraseña">
             </div>
+
+            <div class="form__control">
+              <div class="contenedor__radio">
+                <input type="radio" name="sexo" id="1" value="Masculino">
+                <label for="1">Masculino</label>
+              </div>
+
+              <div class="contenedor__radio">
+                <input type="radio" name="sexo" id="2" value="Femenino">
+                <label for="2">Femenino</label>
+              </div>
+
+              <div class="contenedor__radio">
+                <input type="radio" name="sexo" id="3" value="Otro">
+                <label for="3">Otro</label>
+              </div>
+            </div>
+
+            <div class="form__control form__habilidades" data-habilidades="3">
+              <div class="contenedor__radio">
+                <input type="checkbox" name="habilidades[]" value="PHP" id="PHP">
+                <label for="PHP">PHP</label>
+              </div>
+
+              <div class="contenedor__radio">
+                <input type="checkbox" name="habilidades[]" value="JS" id="JS">
+                <label for="JS">JS</label>
+              </div>
+
+              <div class="contenedor__radio">
+                <input type="checkbox" name="habilidades[]" value="HTML" id="HTML">
+                <label for="HTML">HTML</label>
+              </div>
+
+              <div class="contenedor__radio">
+                <input type="checkbox" name="habilidades[]" value="CSS" id="CSS">
+                <label for="CSS">CSS</label>
+              </div>
+
+              <div class="contenedor__radio">
+                <input type="checkbox" name="habilidades[]" value="JAVA" id="JAVA">
+                <label for="JAVA">JAVA</label>
+              </div>
+            </div>
+
+
             <div>
               <input type="checkbox" name="politicas">
               <label for="politicas">Terminos y condiciones</label>

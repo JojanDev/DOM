@@ -181,3 +181,17 @@ button:hover {
   color: #d9d9d9;
   font-size: small;
 }
+
+.contenedor__radio{
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin: 0 20px;
+
+}
+
+.contenedor__radio > input{
+  width: auto;
+  padding: 0;
+  margin: 0 20px;
+}

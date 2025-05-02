@@ -1,33 +1,83 @@
 import { campos } from "../app.js";
 
+const agregarError = (campo) => {
+  let span = document.createElement("span");
+  span.textContent = "¡¡¡Este campo es obligatorio!!!";
+  span.classList.add("span");
+  campo.insertAdjacentElement("afterend", span);
+  campo.classList.add("borde-rojo");
+}
+
+const validarSexo = (campos) => {
+  campos.forEach(campo => {
+    if (campo.checked)
+      return true;
+  });
+}
+
+let objeto = {};
+
 export const Esvalidar = (event) => {
   event.preventDefault();
+
+  const checkboxs = [...event.target].filter((elemento) => {
+    if (elemento.name == 'habilidades[]')  return elemento.checked;
+  });
+
+  objeto['lenguajes'] = checkboxs.map((campo) =>  campo.value);
+
+  const radios = [...event.target].filter((elemento) => elemento.type == 'radio');
+  
+  const campo_radio = radios.find((radio) => radio.checked) || [];
+
+  let hermano = radios[0].parentElement.parentElement.nextElementSibling;
+  
+  if (campo_radio.length === 0 && hermano.className !== 'span') {
+    agregarError(radios[0].parentElement.parentElement);
+  } else if (campo_radio.length != 0) {
+    objeto['genero'] = campo_radio.value;
+    if (hermano.className == "span") {
+      hermano.remove();
+      radios[0].parentElement.parentElement.classList.remove("borde-rojo");
+
+    }
+  }
+  
 
   let camposVacios = [];
   let regexContrasena = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/;
 
   campos.forEach((campo) => {
-    if (campo.value.trim() === "") {
-      let siguienteElemento = campo.nextElementSibling;
-      camposVacios.push(campo.name);
+    let siguienteElemento = campo.nextElementSibling;
 
-      if (!siguienteElemento || siguienteElemento.className !== "span") {
-        let span = document.createElement("span");
-        span.textContent = "¡¡¡Este campo es obligatorio!!!";
-        span.classList.add("span");
-        campo.insertAdjacentElement("afterend", span);
-        campo.classList.add("borde-rojo");
-      }
+    switch (campo.tagName) {
+      case "SELECT":
+        if (campo.selectedIndex == 0 && !siguienteElemento) {
+          agregarError(campo);
+        }
+
+        if (campo.selectedIndex != 0) {
+          if (siguienteElemento && siguienteElemento.className == "span") {
+            siguienteElemento.remove();
+            campo.classList.remove("borde-rojo");
+
+          }
+        }
+        break;
+      case "INPUT":
+        // console.log(siguienteElemento.className !== "span");
+        
+        if (campo.value.trim() === "") {
+          camposVacios.push(campo.name);
+          if (!siguienteElemento || siguienteElemento.className !== "span") {
+          agregarError(campo);
+          }
+        }
+        break;
+      default:
+        break;
     }
-
-    // switch (campo.tagName) {
-    //   case "SELECT":
-    //     campo.classList.add("borde-rojo");
-    //     break;
-
-    //   default:
-    //     break;
-    // }
+    objeto[campo.getAttribute('name')] = campo.value;
   });
 
   let mensaje = "";
@@ -42,10 +92,18 @@ export const Esvalidar = (event) => {
 
   if (!regexContrasena.test(campos[campos.length - 2].value)) {
     mensaje +=
-      "\nLa contraseña debe tener al menos 8 caracteres, una mayúscula, un número y caracter especial";
+      "\n- La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y caracter especial";
   }
 
-  console.log(campos[campos.length - 1].selectedIndex);
+  let contenedorHabilidades = document.querySelector('.form__habilidades');
+  let minimo = contenedorHabilidades.dataset.habilidades;
+
+  if (checkboxs.length < minimo) {
+    mensaje +=
+      "\n- Seleccione al menos 3 habiliadades";
+  }
+
+  // console.log(campos[campos.length - 1].selectedIndex);
 
   if (campos[campos.length - 1].selectedIndex === 0) {
     mensaje += "\nDebe seleccionar una opción válida.";
@@ -55,27 +113,8 @@ export const Esvalidar = (event) => {
     alert(mensaje);
   } else {
     alert("Formulario enviado correctamente");
-
-    const datos = {};
-    campos.forEach((campo) => {
-      datos[campo.name] = campo.value;
-
-      campo.value = "";
-
-      campo.classList.remove("borde-rojo");
-
-      if (campo.tagName === "SELECT") {
-        campo.selectedIndex = 0;
-      }
-
-      const span = campo.nextElementSibling;
-      if (span && span.classList.contains("span")) {
-        span.remove();
-      }
-    });
-
-    console.log("Datos enviados:", datos);
+    event.target.reset();
+    console.log("Datos enviados:", objeto);
   }
-  // const inputs = document.querySelectorAll('form input[required]');
-  // console.log(inputs);
+
 };

@@ -12,6 +12,8 @@ const usuario = document.querySelector('[name = "usuario"]');
 const contrasena = document.querySelector('[name = "contrasena"]');
 const ciudad = document.querySelector('[name = "ciudades"]');
 
+const sexo = document.querySelectorAll('[name = "sexo"]');
+
 const politicas = document.querySelector('[name = "politicas"]');
 const boton = document.querySelector("#btn_validar");
 
@@ -52,6 +54,12 @@ const validarNumero = (event) => {
     event.preventDefault();
   }
 };
+
+const validarCiudad = () => {
+  if (ciudad.selectedIndex != 0) {
+    
+  }
+}
 
 const validarCampos = (event) => {
   event.preventDefault();
@@ -101,7 +109,7 @@ const validarCampos = (event) => {
 };
 
 const limpiar = (e) => {
-  if (e.target.value !== "") {
+  if (e.target.value !== "" || e.target.name == 'ciudades' != 0) {
     e.target.classList.remove("borde-rojo");
     if (e.target.nextElementSibling.className == "span") {
       e.target.nextElementSibling.remove();
